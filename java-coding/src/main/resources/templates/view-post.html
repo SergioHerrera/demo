@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.css">
+
+<link rel="stylesheet" th:href="@{~/css/style.css}">
+
+<title>Java Coding Example</title>
+
+
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<div class="col-sm-12">
+				<h1 class="text-center">Java Coding Example [POSTS]</h1>
+			</div>
+
+			<div class="col-sm-12 description">
+				<p>Listing the post with its comments. <a th:href="@{/}">Back.</a></p>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="container d-flex justify-content-center mt-100 mb-100">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<h4 class="card-title" th:text="${post.title}"></h4>
+						<h6 class="card-subtitle" th:text="${post.body}"></h6>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container d-flex justify-content-center mt-100 mb-100"
+		th:unless="${#lists.isEmpty(post.comments)}">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<h4 class="card-title">Recent Comments</h4>
+						<h6 class="card-subtitle">Latest Comments section by users</h6>
+					</div>
+					<div class="comment-widgets m-b-20">
+
+						<div class="d-flex flex-row comment-row "
+							th:each="c : ${post.comments}">
+							<div class="p-2">
+								<span class="round"><img alt="user" width="50"
+									th:src="@{~/img/icon.png}"></span>
+							</div>
+							<div class="comment-text active w-100">
+								<h5 th:text="${c.email}"></h5>
+								<div class="comment-footer">
+									<span class="date">March 13, 2020</span> <span
+										class="label label-success">Approved</span> <span
+										class="action-icons active"> <a href="#"
+										data-abc="true"><i class="fa fa-pencil"></i></a> <a href="#"
+										data-abc="true"><i class="fa fa-rotate-right text-success"></i></a>
+										<a href="#" data-abc="true"><i
+											class="fa fa-heart text-danger"></i></a>
+									</span>
+								</div>
+								<p class="m-b-5 m-t-10" th:text="${c.body}"></p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script src="http://localhost:35729/livereload.js"></script>
+</body>
+</html>
