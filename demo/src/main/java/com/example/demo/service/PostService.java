@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,16 +73,21 @@ public class PostService {
 	 */
 	public Output getPost(Long postId) {
 
+		//Build the URL
 		final String getPostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
 				.pathSegment(postId.toString()).build().toUriString();
 
+		//Build a default object with failed status.
 		Output output = Output.builder().success(false).description(FAILED_DESCRIPTION).resourceUrl(getPostRequest)
 				.build();
 
 		try {
 
+			
+			//Request
 			Post currentPost = restTemplate.getForObject(getPostRequest, Post.class);
 
+			//Set success status.
 			output.setContent(Arrays.asList(currentPost));
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
@@ -101,16 +108,20 @@ public class PostService {
 	 */
 	public Output getPosts() {
 
+		//Build the URL
 		final String getPostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE).build()
 				.toUriString();
 
+		//Build a default object with failed status.
 		Output output = Output.builder().success(false).description(FAILED_DESCRIPTION).resourceUrl(getPostRequest)
 				.build();
 
 		try {
 
+			//Request
 			Post[] posts = restTemplate.getForObject(getPostRequest, Post[].class);
 
+			//Set success status.
 			output.setContent(Arrays.asList(posts));
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
@@ -131,16 +142,20 @@ public class PostService {
 	 */
 	public Output newPost(Post post) {
 
+		//Build the URL
 		final String newPostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE).build()
 				.toUriString();
 
+		//Build a default object with failed status.
 		Output output = Output.builder().success(false).description(FAILED_DESCRIPTION).resourceUrl(newPostRequest)
 				.build();
 
 		try {
 
+			//Request
 			final Post newPost = restTemplate.postForObject(newPostRequest, post, Post.class);
 
+			//Set success status.
 			output.setContent(Arrays.asList(newPost));
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
@@ -161,16 +176,20 @@ public class PostService {
 	 */
 	public Output updatePost(Long postId, Post post) {
 
+		//Build the URL
 		final String updatePostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
 				.pathSegment(postId.toString()).build().toUriString();
 
+		//Build a default object with failed status.
 		Output output = Output.builder().success(false).description(FAILED_DESCRIPTION).resourceUrl(updatePostRequest)
 				.build();
 
 		try {
 
+			//Request
 			restTemplate.put(updatePostRequest, post);
 
+			//Set success status.
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
 
@@ -190,16 +209,20 @@ public class PostService {
 	 */
 	public Output deletePost(Long postId) {
 
+		//Build the URL
 		final String deletePostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
 				.pathSegment(postId.toString()).build().toUriString();
 
+		//Build a default object with failed status.
 		Output output = Output.builder().success(false).description(FAILED_DESCRIPTION).resourceUrl(deletePostRequest)
 				.build();
 
 		try {
 
+			//Request
 			restTemplate.delete(deletePostRequest);
 
+			//Set success status.
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
 
@@ -220,6 +243,7 @@ public class PostService {
 	 */
 	public Output getPostWithComments(Long postId) {
 
+		//Get posts and comments.
 		final String getPostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
 				.pathSegment(postId.toString()).build().toUriString();
 		final String getPostCommentsRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
@@ -239,6 +263,7 @@ public class PostService {
 			// Set the comments to the post.
 			currentPost.setComments(Arrays.asList(postComments));
 
+			// Set the success response.
 			output.setContent(Arrays.asList(currentPost));
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
@@ -263,6 +288,7 @@ public class PostService {
 		
 		Output output = new Output(null, false, FAILED_DESCRIPTION, null);
 
+		//Get the post
 		final String getPostRequest = UriComponentsBuilder.fromHttpUrl(fakeApiUrl).pathSegment(RESOURCE)
 				.pathSegment(postId.toString()).build().toUriString();
 
@@ -270,7 +296,11 @@ public class PostService {
 
 			Post currentPost = restTemplate.getForObject(getPostRequest, Post.class);
 
-			storeAsXML.store(currentPost);
+			final String postAsXML = storeAsXML.converter(currentPost);
+			
+			log.info("Post as XML: {}", postAsXML);
+			
+			storeAsXML.store(currentPost.getId() + "-XML-" + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + ".xml" , postAsXML);
 			
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);
@@ -300,7 +330,11 @@ public class PostService {
 
 			Post currentPost = restTemplate.getForObject(getPostRequest, Post.class);
 
-			storeAsJSON.store(currentPost);
+			final String postAsXML = storeAsJSON.converter(currentPost);
+			
+			log.info("Post as JSON: {}", postAsXML);
+			
+			storeAsJSON.store(currentPost.getId() + "-JSON-" + LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + ".json" , postAsXML);
 			
 			output.setSuccess(true);
 			output.setDescription(SUCCESS_DESCRIPTION);

@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Post {
 	
-	@NotNull
+	@NotNull(message = "user cannot be null")
 	private Integer userId;
 	
 	private Integer id;
 	
-	@NotNull
+	@NotNull(message = "title cannot be null")
 	private String title;
 	
-	@NotNull
+	@NotNull(message = "body cannot be null")
 	private String body;
 	
 	private List<Comment> comments;

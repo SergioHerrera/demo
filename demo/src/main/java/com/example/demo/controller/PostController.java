@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Output;
 import com.example.demo.model.Post;
 import com.example.demo.service.PostService;
 
+/**
+ * @author Sergio Herrera Ruiz
+ *
+ */
 @RestController
-@RequestMapping("/post")
 public class PostController {
 	
 	
@@ -97,7 +99,7 @@ public class PostController {
 	 * @return
 	 */
 	@PutMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
-	public Output updatePost(@PathVariable(name = "id", required = true) Long postId, @RequestBody @Valid Post post){
+	public Output updatePost(@PathVariable(name = "id", required = true) Long postId, @RequestBody Post post){
 		
 		
 		return postService.updatePost(postId, post);
@@ -115,6 +117,11 @@ public class PostController {
 		return postService.deletePost(postId);
 	}
 	
+	/**
+	 * Store a post in JSON format.
+	 * @param postId
+	 * @return
+	 */
 	@GetMapping(value = "/{id}/json", produces=MediaType.APPLICATION_JSON_VALUE)
 	public Output storeAsJson(@PathVariable(name = "id", required = true) Long postId){
 		
@@ -122,6 +129,11 @@ public class PostController {
 		return postService.storeAsJson(postId);
 	}
 	
+	/**
+	 * Store a Post in XML format.
+	 * @param postId
+	 * @return
+	 */
 	@GetMapping(value = "/{id}/xml", produces=MediaType.APPLICATION_JSON_VALUE)
 	public Output storeAsXml(@PathVariable(name = "id", required = true) Long postId){
 		
